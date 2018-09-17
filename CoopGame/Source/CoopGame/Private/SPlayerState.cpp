@@ -9,3 +9,9 @@ void ASPlayerState::AddScore(float ScoreDelta)
 {
 	Score += ScoreDelta;
 }
+/*
+void ASPlayerState::ChangePlayerName(const FString& S)
+{
+	SetPlayerName(S);
+}
+*/

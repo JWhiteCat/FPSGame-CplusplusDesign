@@ -46,7 +46,7 @@ void USHealthComponent::HandleTakeAnyDamage(AActor* DamagedActor, float Damage, 
 	UE_LOG(LogTemp, Log, TEXT("Health Changed: %s"), *FString::SanitizeFloat(Health));
 
 	bIsDied = Health <= 0.0f;
-
+	
 	OnHealthChanged.Broadcast(this, Health, Damage, DamageType, InstigatedBy, DamageCauser);
 
 	if (Health <= 0.0f)
@@ -56,6 +56,16 @@ void USHealthComponent::HandleTakeAnyDamage(AActor* DamagedActor, float Damage, 
 		{
 			GM->OnActorKilled.Broadcast(GetOwner(), DamageCauser, InstigatedBy); 
 		}
+
+		//AController* PC = Cast<AController>(GetOwner());
+
+		//GM->RestartCurrentPlayer();
+
+		/*
+		AController* CurrentController = (GetOwner()->GetInstigatorController());
+		
+		GM->RestartCurrentPlayer(CurrentController);
+		*/
 	}
 }
 

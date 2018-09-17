@@ -16,8 +16,11 @@ class COOPGAME_API ASPlayerState : public APlayerState
 	
 public:
 
+	
 	UFUNCTION(BlueprintCallable, Category = "PlayerState")
-	void AddScore(float ScoreDelta);
-	
-	
+	void AddScore(float ScoreDelta);	
+	/*
+	UFUNCTION(BlueprintCallable, Category = "PlayerState")
+	void ChangePlayerName(const FString& S);
+	*/
 };

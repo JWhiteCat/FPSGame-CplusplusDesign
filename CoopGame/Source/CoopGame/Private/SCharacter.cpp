@@ -9,6 +9,7 @@
 #include "CoopGame.h"
 #include "SHealthComponent.h"
 #include "SWeapon.h"
+#include "SGameMode.h"
 #include "Net/UnrealNetwork.h"
 
 // Sets default values
@@ -120,8 +121,8 @@ void ASCharacter::OnHealthChanged(USHealthComponent* HealthComp, float Health, f
 		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
 		DetachFromControllerPendingDestroy();
-
-		SetLifeSpan(10.0f);
+		CurrentWeapon->Destroyed();
+		SetLifeSpan(4.0f);
 	}
 }
 

@@ -11,22 +11,22 @@
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnActorKilled, AActor*, VictimActor, AActor*, KillerActor, AController*, KillerController);
 
 /**
- * 
+ *
  */
 UCLASS()
 class COOPGAME_API ASGameMode : public AGameModeBase
 {
 	GENERATED_BODY()
-	
-	
+
+
 protected:
 
 	void CheckAnyPlayerAlive();
 
+	UFUNCTION(BlueprintCallable, Category = "GameMode")
 	void GameOver();
 
-	void RestartDeadPlayers();
-	
+
 public:
 
 	ASGameMode();
@@ -38,4 +38,13 @@ public:
 	UPROPERTY(BlueprintAssignable, Category = "GameMode")
 	FOnActorKilled OnActorKilled;
 
+	UFUNCTION(BlueprintCallable, Category = "GameMode")
+	bool CheckStringIsValid(const FString str, const FString Reg);
+
+	void RestartDeadPlayers();
+
+	void RestartCurrentPlayer();
+
+	UPROPERTY(BlueprintReadWrite, Category = "GameMode")
+	FString Champion;
 };
