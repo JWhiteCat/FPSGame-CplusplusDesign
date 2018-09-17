@@ -59,7 +59,7 @@ void USHealthComponent::HandleTakeAnyDamage(AActor* DamagedActor, float Damage, 
 
 		//AController* PC = Cast<AController>(GetOwner());
 
-		//GM->RestartCurrentPlayer();
+		GM->RestartCurrentPlayer();
 
 		/*
 		AController* CurrentController = (GetOwner()->GetInstigatorController());
