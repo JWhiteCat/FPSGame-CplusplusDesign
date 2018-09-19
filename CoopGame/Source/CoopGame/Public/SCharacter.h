@@ -78,7 +78,22 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
 	
 	virtual FVector GetPawnViewLocation() const override;
+
+
+	//”Œœ∑Ω· ¯
+	UFUNCTION(NetMulticast, Reliable, WithValidation)
+	void GameOver(const int32 _VictorID);
+
+	UPROPERTY(Replicated)
+	int32 VictorID;
+
+
+	class USGameOverUserWidget* GameOverUserWidget;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Player")
+	TSubclassOf<class UUserWidget> GameOverUserWidgetClass;
+
+	void TestCreateWidget();
 };

@@ -12,6 +12,10 @@
 #include "SGameMode.h"
 #include "Net/UnrealNetwork.h"
 
+#include "SGameOverUserWidget.h"
+#include "TextBlock.h"
+#include "SPlayerState.h"
+
 // Sets default values
 ASCharacter::ASCharacter()
 {
@@ -136,6 +140,29 @@ void ASCharacter::Tick(float DeltaTime)
 	float NewFOV = FMath::FInterpTo(CameraComp->FieldOfView, TargetFOV, DeltaTime, ZoomInterpSpeed);
 
 	CameraComp->SetFieldOfView(NewFOV);
+
+	/*
+	if (Role == ROLE_Authority)
+	{
+		//检查得分
+		for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
+		{
+
+			APlayerController* PC = It->Get();
+			if (PC && PC->PlayerState)
+			{
+				if (PC->PlayerState->Score >= 20.0f)
+				{
+					VictorID = PC->PlayerState->PlayerId;
+					GameOver(VictorID);
+					PC->PlayerState->Score = 0.0f;
+				}
+
+			}
+		}
+	}
+	*/
+	
 }
 
 // Called to bind functionality to input
@@ -159,6 +186,10 @@ void ASCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 
 	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &ASCharacter::StartFire);
 	PlayerInputComponent->BindAction("Fire", IE_Released, this, &ASCharacter::StopFire);
+
+
+	//TEST
+	PlayerInputComponent->BindAction("TestCreateWidget", IE_Pressed, this, &ASCharacter::TestCreateWidget);
 }
 
 FVector ASCharacter::GetPawnViewLocation() const
@@ -169,6 +200,68 @@ FVector ASCharacter::GetPawnViewLocation() const
 	}
 
 	return Super::GetPawnViewLocation();
+}
+
+//
+void ASCharacter::TestCreateWidget()
+{
+	if (GEngine && GEngine->GameViewport)
+	{
+		/*
+		static ConstructorHelpers::FClassFinder<UUserWidget> GameOverUserWidgetBP(TEXT("WidgetBlueprint'/Game/UI/WBP_GameOver.WBP_GameOver_C'"));
+		if (GameOverUserWidgetBP.Succeeded())
+		{
+			UE_LOG(LogTemp, Warning, TEXT("GameOverUserWidgetBP Succeed!"));
+			GameOverUserWidgetClass = GameOverUserWidgetBP.Class;
+		}
+		*/
+
+		GameOverUserWidget = CreateWidget<USGameOverUserWidget>(Cast<APlayerController>(GetController()), GameOverUserWidgetClass);
+
+		if (GameOverUserWidget != nullptr)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("GameOverUserWidget AddToViewPort!"));
+			//GameOverUserWidget->VictorName->SetText(FText::FromString(FString::FromInt(_VictorID)));
+			GameOverUserWidget->AddToViewport();
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("GameOverUserWidget is a nullptr"));
+		}
+	}
+}
+
+void ASCharacter::GameOver_Implementation(const int32 _VictorID)
+{
+	//创建GameOverWidget
+	if (GEngine && GEngine->GameViewport)
+	{
+		/*
+		static ConstructorHelpers::FClassFinder<USGameOverUserWidget> GameOverUserWidgetBP(TEXT("WidgetBlueprint'/Game/UI/WBP_GameOver.WBP_GameOver_C'"));
+		if (GameOverUserWidgetBP.Succeeded())
+		{
+			UE_LOG(LogTemp, Warning, TEXT("GameOverUserWidgetBP Succeed!"));
+			GameOverUserWidgetClass = GameOverUserWidgetBP.Class;
+		}
+		*/
+		GameOverUserWidget = CreateWidget<USGameOverUserWidget>(Cast<APlayerController>(GetController()), GameOverUserWidgetClass);
+
+		if (GameOverUserWidget != nullptr)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("GameOverUserWidget AddToViewPort!"));
+			//GameOverUserWidget->VictorName->SetText(FText::FromString(FString::FromInt(_VictorID)));
+			GameOverUserWidget->AddToViewport();
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("GameOverUserWidget is a nullptr"));
+		}
+	}
+}
+
+bool ASCharacter::GameOver_Validate(const int32 _VictorID)
+{
+	return true;
 }
 
 void ASCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const

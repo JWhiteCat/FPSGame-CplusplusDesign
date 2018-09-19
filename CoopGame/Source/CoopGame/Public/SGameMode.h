@@ -45,6 +45,14 @@ public:
 
 	void RestartCurrentPlayer();
 
+	UFUNCTION(BlueprintCallable, Category = "GameMode")
+	int32 CheckScore();
+
 	UPROPERTY(BlueprintReadWrite, Category = "GameMode")
 	FString Champion;
+
+	class USGameOverUserWidget* GameOverUserWidget;
+	TSubclassOf<class UUserWidget> GameOverUserWidgetClass;
+
+	int32 VictorID;
 };
